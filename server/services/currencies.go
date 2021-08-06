@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetCryptocurrency(res http.ResponseWriter, req *http.Request) {
+func GetCurrency(res http.ResponseWriter, req *http.Request) {
 
 	// api_key := config.API_KEY
 	vars := mux.Vars(req)
@@ -16,7 +16,7 @@ func GetCryptocurrency(res http.ResponseWriter, req *http.Request) {
 	respondJSON(res, http.StatusOK, cryptoID)
 }
 
-func GetAllCryptocurrencies(res http.ResponseWriter, req *http.Request) {
+func GetAllCurrencies(res http.ResponseWriter, req *http.Request) {
 
 	var arrayOfCryptos = make([]models.Currency, 0)
 
@@ -26,7 +26,7 @@ func GetAllCryptocurrencies(res http.ResponseWriter, req *http.Request) {
 	respondJSON(res, http.StatusOK, arrayOfCryptos)
 }
 
-func GetCryptocurrencyTimeline(res http.ResponseWriter, req *http.Request) {
+func GetCurrencyTimeline(res http.ResponseWriter, req *http.Request) {
 
 	vars := mux.Vars(req)
 	curr := models.CurrencyTimeline{vars["cid"],

@@ -2,6 +2,7 @@ package server
 
 import (
 	"crypto-api/server/services"
+	"crypto_bootcamp/crypto-api/server/services"
 	"log"
 	"net/http"
 
@@ -23,9 +24,9 @@ func (a *App) setRouters() {
 	a.Put("/users/{id}", a.handleRequest(services.UpdateUser))
 
 	// Cryptocurrrency related routing
-	a.Get("/cryptocurrency", a.handleRequest(services.GetAllCryptocurrencies))
-	a.Get("/cryptocurrency/{cid}", a.handleRequest(services.GetCryptocurrency))
-	a.Get("/cryptocurrency/{cid}/timeline", a.handleRequest(services.GetCryptocurrencyTimeline))
+	a.Get("/currency", a.handleRequest(services.GetAllCurrencies))
+	a.Get("/currency/{cid}", a.handleRequest(services.GetCurrency))
+	a.Get("/currency/{cid}/timeline", a.handleRequest(services.GetCurrencyTimeline))
 }
 
 // Get wraps the router for GET method
