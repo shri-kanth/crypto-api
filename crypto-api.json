@@ -1,0 +1,181 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Crypto Trading API",
+    "description": "This is a dummy API for Crypto Trading Project",
+    "contact": {
+      "email": "aarya.boya@zemosolabs.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/AaryaZemoso/CryptoTrading/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://virtserver.swaggerhub.com/AaryaZemoso/CrytoTrading/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Watchlist",
+      "description": "List of Cryptocurrencies"
+    }
+  ],
+  "paths": {
+    "/watchlist/{uid}": {
+      "get": {
+        "tags": [
+          "Watchlist"
+        ],
+        "summary": "Returns list of Cryptocurrency ID's from User Watchlist",
+        "description": "By passing the user_id as a parameter, it lists out all the Cryptocurrency the user has added in his watchlist\n",
+        "operationId": "getWatchlist",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "list of cryptocurrency id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WatchList"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User ID Invalid"
+          }
+        }
+      }
+    },
+    "/watchlist/{uid}/{cid}": {
+      "put": {
+        "tags": [
+          "Watchlist"
+        ],
+        "summary": "Adds the Cryptocurrency to the User's Watchlist",
+        "description": "Passing the user_id and cryptocurrency_id, it will add the respective cryptocurrency to the user's watchlist\n",
+        "operationId": "addToWatchlist",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "description": "Cryptocurrency ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Added successfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid User ID or Cryptocurrency ID"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Watchlist"
+        ],
+        "summary": "Deletes the Cryptocurrency from User's Watchlist",
+        "description": "Passing the user_id and cryptocurrency_id, it will remove the respective cryptocurrency from the user's watchlist\n",
+        "operationId": "deleteFromWatchlist",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cid",
+            "in": "path",
+            "description": "Cryptocurrency ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Removed successfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid User ID or Cryptocurrency ID"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "WatchList": {
+        "required": [
+          "list_of_cryptocurrencies"
+        ],
+        "type": "object",
+        "properties": {
+          "list_of_cryptocurrencies": {
+            "type": "array",
+            "example": [
+              "BTC",
+              "ETH"
+            ],
+            "items": {
+              "type": "string",
+              "format": "cryptocurrencies_id"
+            }
+          }
+        }
+      }
+    }
+  }
+}
