@@ -1,0 +1,169 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample Petstore server.  You can find \nout more about Swagger at \n[http://swagger.io](http://swagger.io) or on \n[irc.freenode.net, #swagger](http://swagger.io/irc/).\n",
+    "version": "1.0.0",
+    "title": "Swagger Petstore",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/ranadheer-bolli/CryptoApp/1.0.0",
+  "tags": [
+    {
+      "name": "Portfolio",
+      "description": "Everything about Portfolio",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/portfolio/{uid}": {
+      "get": {
+        "tags": [
+          "portfolio"
+        ],
+        "summary": "Fetch all bought assets",
+        "description": "",
+        "operationId": "findAssetListByUserName",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/Portfolio"
+            }
+          },
+          "401": {
+            "description": "UnauthorizedError: private profile"
+          }
+        }
+      }
+    },
+    "/portfolio/{uid}/{date}": {
+      "get": {
+        "tags": [
+          "portfolio"
+        ],
+        "summary": "Update the Portfolio",
+        "description": "",
+        "operationId": "updatePortfolio",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "date",
+            "in": "path",
+            "description": "From Date",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/inline_response_200"
+              }
+            }
+          },
+          "401": {
+            "description": "UnauthorizedError: private profile"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Portfolio": {
+      "type": "object",
+      "properties": {
+        "totalBalance": {
+          "type": "number",
+          "format": "float64"
+        },
+        "totalInvestment": {
+          "type": "number",
+          "format": "float64"
+        },
+        "portfolioList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Portfolio_portfolioList"
+          }
+        }
+      }
+    },
+    "inline_response_200": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string"
+        },
+        "portfolio": {
+          "$ref": "#/definitions/Portfolio"
+        }
+      }
+    },
+    "Portfolio_portfolioList": {
+      "type": "object",
+      "properties": {
+        "currencyId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "holdings": {
+          "type": "number",
+          "format": "float"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "gains": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
