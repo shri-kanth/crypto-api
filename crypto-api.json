@@ -26,6 +26,10 @@
     {
       "name": "Watchlist",
       "description": "List of Cryptocurrencies"
+    },
+    {
+      "name": "Cryotocurrency",
+      "description": "Fetching Cryptocurrency details."
     }
   ],
   "paths": {
@@ -153,6 +157,133 @@
           }
         }
       }
+    },
+    "/cryptocurrency": {
+      "get": {
+        "tags": [
+          "Cryotocurrency"
+        ],
+        "summary": "Gets the list of cryptocurrency available for transactions",
+        "description": "Returns the list of all available cryptocurrency in the market which are\nable to buy/sell\n",
+        "operationId": "getAllCryptocurrencies",
+        "responses": {
+          "200": {
+            "description": "List of all the available Cryptocurrencies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Cryptocurrency"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/cryptocurrency/{cid}": {
+      "get": {
+        "tags": [
+          "Cryotocurrency"
+        ],
+        "summary": "Details of particular Cryptocurrency",
+        "description": "Returns the details of Cryptocurrency whose 'id' matches with the {cid}\n",
+        "operationId": "getCryptocurrency",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "description": "Cryptocurrency ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Details of particular Cryptocurrency",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Cryptocurrency"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/cryptocurrency/{cid}/timeline": {
+      "get": {
+        "tags": [
+          "Cryotocurrency"
+        ],
+        "summary": "Returns time series values of Cryptocurrency ID and corresponding cryptocurrency value",
+        "description": "Given the ID of Cryptocurrency (cid), it returns the timeline from the initial \nlaunch of the cryptocurrency.\n\nAdditional Parameters helps limit the range of timeline \n  - start -> Datetime Format\n  - end   -> Datetime Format\n",
+        "operationId": "getCryptocurrencyTimeline",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "description": "Cryptocurrency ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date - Follows RFC3339",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "object",
+              "format": "RFC3339"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End date - Follows RFC3339",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "object",
+              "format": "RFC3339"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the list of timestamp values and corresponding cryptocurrency value at the given timestamp",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -172,6 +303,59 @@
             "items": {
               "type": "string",
               "format": "cryptocurrencies_id"
+            }
+          }
+        }
+      },
+      "Cryptocurrency": {
+        "required": [
+          "description",
+          "id",
+          "logo_url",
+          "marketcap",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "marketcap": {
+            "type": "number",
+            "format": "float64"
+          },
+          "logo_url": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_200": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "BTC"
+          },
+          "timeline": {
+            "type": "array",
+            "example": [
+              "2021-08-06T10:00:00Z",
+              204242.42
+            ],
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ]
             }
           }
         }
