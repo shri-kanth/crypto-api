@@ -14,6 +14,10 @@
   },
   "servers": [
     {
+      "url": "https://virtserver.swaggerhub.com/saichethan.madishetty/CryptoApi/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
       "url": "https://virtserver.swaggerhub.com/AaryaZemoso/CryptoTrading/1.0.0",
       "description": "SwaggerHub API Auto Mocking"
     },
@@ -26,6 +30,10 @@
     {
       "name": "Watchlist",
       "description": "List of Cryptocurrencies"
+    },
+    {
+      "name": "Transactions",
+      "description": "List of Transactions"
     }
   ],
   "paths": {
@@ -153,6 +161,147 @@
           }
         }
       }
+    },
+    "/transactions/{userId}": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Returns recent transactions of user",
+        "description": "By passing the user_id, offset, limit as parameters, it lists the recent transactions\n",
+        "operationId": "getTransactions",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "number of recent transactions",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "list of recent transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transactions"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User ID Invalid"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Used to buy the currency.",
+        "description": "Passing the userId \n",
+        "operationId": "buyCurrency",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "Details of payment",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/Transactions"
+            }
+          }
+        ],
+        "responses": {
+          "206": {
+            "description": "Payment successful"
+          },
+          "400": {
+            "description": "Invalid User ID"
+          }
+        }
+      }
+    },
+    "/transactions/{userId}/{transactionId}": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "summary": "Get the transaction based on the transaction id",
+        "description": "Passing the user_id and transaction_id, it will give the transaction details\n",
+        "operationId": "getTransactionById",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "Transaction ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Transaction Details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transactions"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid User ID or Transaction ID"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -173,6 +322,39 @@
               "type": "string",
               "format": "cryptocurrencies_id"
             }
+          }
+        }
+      },
+      "Transactions": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currency_id": {
+            "type": "string"
+          },
+          "units": {
+            "type": "number",
+            "format": "float64"
+          },
+          "total_value": {
+            "type": "number",
+            "format": "float64"
+          },
+          "status": {
+            "type": "string"
+          },
+          "time_stamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "payment_type": {
+            "type": "string"
+          },
+          "payment_mode": {
+            "type": "string"
           }
         }
       }
