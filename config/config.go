@@ -1,5 +1,7 @@
 package config
 
+var API_KEY string = "903552914cec4c6d4c38c2da7849746d20bdb231"
+
 type Config struct {
 	DB *DBConfig
 }
