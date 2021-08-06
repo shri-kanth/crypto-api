@@ -153,6 +153,108 @@
           }
         }
       }
+    },
+    "/portfolio/{uid}": {
+      "get": {
+        "tags": [
+          "portfolio"
+        ],
+        "summary": "Fetch all bought assets",
+        "description": "",
+        "operationId": "findAssetListByUserName",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnauthorizedError: private profile"
+          }
+        }
+      }
+    },
+    "/portfolio/{uid}/timeline": {
+      "get": {
+        "tags": [
+          "portfolio"
+        ],
+        "summary": "get portfolio values by timestamp",
+        "description": "",
+        "operationId": "getPortfolioValue",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "Start Date",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "End Date",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "portfolio": {
+                        "$ref": "#/components/schemas/Portfolio"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "UnauthorizedError: private profile"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -172,6 +274,43 @@
             "items": {
               "type": "string",
               "format": "cryptocurrencies_id"
+            }
+          }
+        }
+      },
+      "Portfolio": {
+        "type": "object",
+        "properties": {
+          "totalBalance": {
+            "type": "number",
+            "format": "float64"
+          },
+          "totalInvestment": {
+            "type": "number",
+            "format": "float64"
+          },
+          "portfolioList": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "currencyId": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "holdings": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "price": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "gains": {
+                  "type": "number",
+                  "format": "float"
+                }
+              }
             }
           }
         }
