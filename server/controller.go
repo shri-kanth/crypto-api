@@ -1,10 +1,11 @@
 package server
 
 import (
+	"crypto-api/server/services"
 	"log"
 	"net/http"
+
 	"github.com/gorilla/mux"
-	"crypto-api/server/services"
 )
 
 type App struct {
@@ -17,8 +18,24 @@ func (a *App) Initialize() {
 }
 
 func (a *App) setRouters() {
+
+	//Get
+
+	//Users
 	a.Get("/users/{id}", a.handleRequest(services.GetUser))
+
+	//Transactions
+	a.Get("/transactions/{userId}", a.handleRequest(services.GetTransactions))
+	a.Get("/transactions/{userId}/{transactionId}", a.handleRequest(services.GetTransactionById))
+
+	//Post
+	//Users
 	a.Post("/users", a.handleRequest(services.CreateUser))
+	//Transactions
+	a.Post("/transactions/{userId}", a.handleRequest(services.CreateTransaction))
+
+	//Put
+	//Users
 	a.Put("/users/{id}", a.handleRequest(services.UpdateUser))
 }
 
