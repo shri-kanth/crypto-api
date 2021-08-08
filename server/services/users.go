@@ -1,16 +1,17 @@
 package services
 
 import (
-	"net/http"
-	"encoding/json"
-	"github.com/gorilla/mux"
 	"crypto-api/server/models"
+	"encoding/json"
+	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	user := models.User{vars["id"],"name","address","email"}
+	user := models.User{vars["id"], "name", "address", "email"}
 	respondJSON(w, http.StatusOK, user)
 }
 

@@ -1,10 +1,11 @@
 package server
 
 import (
+	"crypto-api/server/services"
 	"log"
 	"net/http"
+
 	"github.com/gorilla/mux"
-	"crypto-api/server/services"
 )
 
 type App struct {
@@ -20,6 +21,15 @@ func (a *App) setRouters() {
 	a.Get("/users/{id}", a.handleRequest(services.GetUser))
 	a.Post("/users", a.handleRequest(services.CreateUser))
 	a.Put("/users/{id}", a.handleRequest(services.UpdateUser))
+
+	// portfolio
+	a.Get("/portfolio/{uid}", a.handleRequest(services.GetPortfolio))
+	a.Get("/portfolio/{uid}/timeline", a.handleRequest(services.GetMyPortfolioValue))
+
+	// WatchList
+	a.Get("/watchlist/{uid}", a.handleRequest(services.GetWatchList))
+	a.Put("/watchlist/{uid}/{cid}", a.handleRequest(services.UpdateWatchList))
+
 }
 
 // Get wraps the router for GET method
