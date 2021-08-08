@@ -158,14 +158,14 @@
         }
       }
     },
-    "/cryptocurrency": {
+    "/currency": {
       "get": {
         "tags": [
           "Cryotocurrency"
         ],
         "summary": "Gets the list of cryptocurrency available for transactions",
         "description": "Returns the list of all available cryptocurrency in the market which are\nable to buy/sell\n",
-        "operationId": "getAllCryptocurrencies",
+        "operationId": "getAllCurrencies",
         "responses": {
           "200": {
             "description": "List of all the available Cryptocurrencies",
@@ -174,7 +174,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Cryptocurrency"
+                    "$ref": "#/components/schemas/Currency"
                   }
                 }
               }
@@ -187,14 +187,14 @@
         }
       }
     },
-    "/cryptocurrency/{cid}": {
+    "/currency/{cid}": {
       "get": {
         "tags": [
           "Cryotocurrency"
         ],
         "summary": "Details of particular Cryptocurrency",
         "description": "Returns the details of Cryptocurrency whose 'id' matches with the {cid}\n",
-        "operationId": "getCryptocurrency",
+        "operationId": "getCurrency",
         "parameters": [
           {
             "name": "cid",
@@ -214,7 +214,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Cryptocurrency"
+                  "$ref": "#/components/schemas/Currency"
                 }
               }
             }
@@ -226,48 +226,51 @@
         }
       }
     },
-    "/cryptocurrency/{cid}/timeline": {
+    "/currency/{ids}/timeline": {
       "get": {
         "tags": [
           "Cryotocurrency"
         ],
         "summary": "Returns time series values of Cryptocurrency ID and corresponding cryptocurrency value",
         "description": "Given the ID of Cryptocurrency (cid), it returns the timeline from the initial \nlaunch of the cryptocurrency.\n\nAdditional Parameters helps limit the range of timeline \n  - start -> Datetime Format\n  - end   -> Datetime Format\n",
-        "operationId": "getCryptocurrencyTimeline",
+        "operationId": "getCurrencyTimeline",
         "parameters": [
           {
-            "name": "cid",
+            "name": "ids",
             "in": "path",
-            "description": "Cryptocurrency ID",
+            "description": "Currency ID(s)",
             "required": true,
             "style": "simple",
             "explode": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "BTC,ETH"
             }
           },
           {
             "name": "start",
             "in": "query",
-            "description": "Start date - Follows RFC3339",
-            "required": false,
+            "description": "Start date - Follows RFC3339 format",
+            "required": true,
             "style": "form",
             "explode": true,
             "schema": {
-              "type": "object",
-              "format": "RFC3339"
+              "type": "string",
+              "format": "datetime",
+              "example": "2021-08-06T10:00:00Z"
             }
           },
           {
             "name": "end",
             "in": "query",
-            "description": "End date - Follows RFC3339",
+            "description": "End date - Follows RFC3339 format",
             "required": false,
             "style": "form",
             "explode": true,
             "schema": {
-              "type": "object",
-              "format": "RFC3339"
+              "type": "string",
+              "format": "datetime",
+              "example": "2021-08-06T11:00:00Z"
             }
           }
         ],
@@ -277,7 +280,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200"
+                  "$ref": "#/components/schemas/Timeline"
                 }
               }
             }
@@ -301,13 +304,12 @@
               "ETH"
             ],
             "items": {
-              "type": "string",
-              "format": "cryptocurrencies_id"
+              "type": "string"
             }
           }
         }
       },
-      "Cryptocurrency": {
+      "Currency": {
         "required": [
           "description",
           "id",
@@ -335,7 +337,7 @@
           }
         }
       },
-      "inline_response_200": {
+      "Timeline": {
         "properties": {
           "id": {
             "type": "string",
