@@ -26,6 +26,10 @@
     {
       "name": "Watchlist",
       "description": "List of Cryptocurrencies"
+    },
+    {
+      "name": "Users",
+      "description": "User info"
     }
   ],
   "paths": {
@@ -105,7 +109,9 @@
         "responses": {
           "204": {
             "description": "Added successfully",
-            "content": {}
+            "content": {
+              
+            }
           },
           "400": {
             "description": "Invalid User ID or Cryptocurrency ID"
@@ -146,10 +152,211 @@
         "responses": {
           "204": {
             "description": "Removed successfully",
-            "content": {}
+            "content": {
+              
+            }
           },
           "400": {
             "description": "Invalid User ID or Cryptocurrency ID"
+          }
+        }
+      }
+    },
+    "/portfolio/{uid}": {
+      "get": {
+        "tags": [
+          "portfolio"
+        ],
+        "summary": "Fetch all bought assets",
+        "description": "",
+        "operationId": "findAssetListByUserName",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User ID Invalid"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Returns user info based on ID",
+        "description": "By passing the userId, it fetches all info like name, email etc.,",
+        "operationId": "getUserId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "gets user based on ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User ID Invalid"
+          }
+        }
+      }
+    },
+    "/portfolio/{uid}/timeline": {
+      "get": {
+        "tags": [
+          "portfolio"
+        ],
+        "summary": "get portfolio values by timestamp",
+        "description": "",
+        "operationId": "getPortfolioValue",
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "description": "Start Date",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "description": "End Date",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "portfolio": {
+                        "$ref": "#/components/schemas/Portfolio"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid User ID"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Updates user info",
+        "description": "updates user info",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Updated successfully",
+            "content": {
+              
+            }
+          },
+          "400": {
+            "description": "Invalid User ID"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Add new user info",
+        "description": "Add new user info",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/idResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -172,6 +379,74 @@
             "items": {
               "type": "string",
               "format": "cryptocurrencies_id"
+            }
+          }
+        }
+      },
+      "Portfolio": {
+        "type": "object",
+        "properties": {
+          "totalBalance": {
+            "type": "number",
+            "format": "float64"
+          },
+          "totalInvestment": {
+            "type": "number",
+            "format": "float64"
+          },
+          "portfolioList": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "currencyId": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "holdings": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "price": {
+                  "type": "number",
+                  "format": "float"
+                },
+                "gains": {
+                  "type": "number",
+                  "format": "float"
+                }
+              }
+            },
+            "user": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "picture": {
+                  "type": "string"
+                }
+              }
+            },
+            "idResponse": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                }
+              }
             }
           }
         }
