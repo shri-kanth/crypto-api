@@ -1,21 +1,30 @@
 package services
 
 import (
-	"net/http"
-	"encoding/json"
-	"github.com/gorilla/mux"
 	"crypto-api/server/models"
+	"encoding/json"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-func GetUser(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
+func GetUser(c *gin.Context) {
+	// vars := mux.Vars(r)
+	id := c.Param("id")
 
-	user := models.User{vars["id"],"name","address","email"}
+	w := c.Writer
+
+	user := models.User{id, "name", "address", "email"}
 	respondJSON(w, http.StatusOK, user)
 }
 
-func CreateUser(w http.ResponseWriter, r *http.Request) {
+func CreateUser(c *gin.Context) {
+
+	r := c.Request
+	w := c.Writer
+
 	user := models.User{}
+
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&user); err != nil {
 		respondError(w, http.StatusBadRequest, err.Error())
@@ -25,8 +34,12 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, models.IdResponse{"qkjwqkjwe"})
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request) {
+func UpdateUser(c *gin.Context) {
 	user := models.User{}
+
+	r := c.Request
+	w := c.Writer
+
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&user); err != nil {
 		respondError(w, http.StatusBadRequest, err.Error())
