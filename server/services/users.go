@@ -10,7 +10,7 @@ import (
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
-	user := models.User{vars["id"],"name","address","email"}
+	user := models.User{vars["id"],"saketh","lingampalli","saketh.kokonda@zemosolabs.com", "91728392039", "random_url"}
 	respondJSON(w, http.StatusOK, user)
 }
 
@@ -33,5 +33,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer r.Body.Close()
-	respondJSON(w, http.StatusOK, models.IdResponse{"qkjwqkjwe"})
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	return
 }

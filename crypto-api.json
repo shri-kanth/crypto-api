@@ -26,6 +26,10 @@
     {
       "name": "Watchlist",
       "description": "List of Cryptocurrencies"
+    },
+    {
+      "name": "Users",
+      "description": "User info"
     }
   ],
   "paths": {
@@ -153,6 +157,101 @@
           }
         }
       }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Returns user info based on ID",
+        "description": "By passing the userId, it fetches all info like name, email etc.,",
+        "operationId": "getUserId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "User ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "gets user based on ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/user"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User ID Invalid"
+          }
+        }
+      }
+    },
+    "/users/": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Updates user info",
+        "description": "updates user info",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Updated successfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid User ID"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Add new user info",
+        "description": "Add new user info",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/idResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -173,6 +272,37 @@
               "type": "string",
               "format": "cryptocurrencies_id"
             }
+          }
+        }
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "picture": {
+            "type": "string"
+          }
+        }
+      },
+      "idResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
           }
         }
       }

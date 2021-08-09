@@ -5,6 +5,8 @@ type User struct {
 	Name string
 	Address string
 	Email string
+	Phone string
+	Picture string
 }
 
 type IdResponse struct {
